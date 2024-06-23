@@ -69,6 +69,6 @@ Using this script:
 - Align project specifications from PDF1 with funding requirements in PDF2.
 - Determine overlap and discrepancies using cosine similarity scores.
 
-### Example Usage with Colab Notebook
+### Example Usage with Notebook
 
 - To explore a practical demonstration of PDF Chunk Matching with NLP Techniques, check out the notebook [PDF-Chunk-Matching](doc_mapper_using_embedding.ipynb) to see how to extract, embed, and align text chunks from PDF documents.
