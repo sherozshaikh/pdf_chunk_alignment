@@ -48,6 +48,30 @@ class DocMapper():
     """
     return "Class to fetch Similar Doc1 Elements for given Doc2 Elements."
 
+  def check_packages(self)->None:
+    """
+    Checks for required Python packages and installs them if not already installed.
+
+    Returns:
+    - None
+    """
+    !pip install --quiet importlib
+    import importlib
+
+    req_packages:list = ['typing','os','re','zipfile','numpy','pandas','sklearn','nltk']
+
+    for package_name in req_packages:
+      try:
+        importlib.import_module(package_name)
+      except:
+        try:
+          !pip install --quiet {package_name}
+        except Exception as e:
+          print(f"Required package {package_name} was not installed!: {str(e)}")
+    del importlib
+    print("All required packages are installed.")
+    return None
+
   def trim_characters(self,stxt:str='')->str:
     """
     Removes non-alphanumeric characters from a string.
@@ -187,6 +211,9 @@ class DocMapper():
     """
     Main function to perform attribute mapping and write results to a CSV file.
     """
+
+    self.check_packages()
+
     # Calculate similarity scores based on the availability of an embedding model
     if (self.doc1_elements_embedding is not None and np.any(self.doc1_elements_embedding != None)) and (self.doc2_elements_embedding is not None and np.any(self.doc2_elements_embedding != None)):
       similarity_score:np.ndarray = self.calculate_similarity_score(texts1_matrix=self.doc1_elements_embedding,texts2_matrix=self.doc2_elements_embedding)
