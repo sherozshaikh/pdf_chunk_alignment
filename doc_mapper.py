@@ -19,6 +19,7 @@ print("All required packages are installed.")
 
 # Import installed packages.
 from typing import List
+import time
 import os
 import re
 import zipfile
@@ -208,6 +209,7 @@ class DocMapper():
     """
     Main function to perform attribute mapping and write results to a CSV file.
     """
+    start_time:float = time.time()
     # Calculate similarity scores based on the availability of an embedding model
     if (self.doc1_elements_embedding is not None and np.any(self.doc1_elements_embedding != None)) and (self.doc2_elements_embedding is not None and np.any(self.doc2_elements_embedding != None)):
       similarity_score:np.ndarray = self.calculate_similarity_score(texts1_matrix=self.doc1_elements_embedding,texts2_matrix=self.doc2_elements_embedding)
@@ -227,7 +229,7 @@ class DocMapper():
     del mapped_result_df
 
     # self.create_final_zip() # create zip
-    print('wrote the final output to local: ',time.ctime())
+    print(f"Elapsed time: {((time.time() - start_time) / 60):.2f} minutes")
     return None
 
 def custom_ram_cleanup_func()->None:
