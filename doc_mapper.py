@@ -35,6 +35,7 @@ class DocMapper():
     self.threshold_:float = threshold_
     self.output_folder:str = self.trim_characters(stxt=output_folder).replace(' ','_')
     self.same_flag:bool = same_flag
+    self.check_packages()
 
   def __repr__(self):
     """
@@ -211,9 +212,6 @@ class DocMapper():
     """
     Main function to perform attribute mapping and write results to a CSV file.
     """
-
-    self.check_packages()
-
     # Calculate similarity scores based on the availability of an embedding model
     if (self.doc1_elements_embedding is not None and np.any(self.doc1_elements_embedding != None)) and (self.doc2_elements_embedding is not None and np.any(self.doc2_elements_embedding != None)):
       similarity_score:np.ndarray = self.calculate_similarity_score(texts1_matrix=self.doc1_elements_embedding,texts2_matrix=self.doc2_elements_embedding)
