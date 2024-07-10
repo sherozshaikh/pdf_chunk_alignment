@@ -1,15 +1,3 @@
-from typing import List
-import os
-import re
-import zipfile
-import numpy as np
-import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-import nltk
-nltk.download(['punkt'])
-from nltk.tokenize import word_tokenize
-
 class DocMapper():
   """
   A class to find close elements links between two documents.
@@ -28,6 +16,8 @@ class DocMapper():
     - same_flag (bool), default = False: If same then retrive only lower trianglular cosine matrix.
 
     """
+    self.check_packages()
+    self.import_packages()
     self.doc1_elements_list:List[str] = doc1_elements_list
     self.doc2_elements_list:List[str] = doc2_elements_list
     self.doc1_elements_embedding:np.ndarray = doc1_elements_embedding
@@ -35,7 +25,6 @@ class DocMapper():
     self.threshold_:float = threshold_
     self.output_folder:str = self.trim_characters(stxt=output_folder).replace(' ','_')
     self.same_flag:bool = same_flag
-    self.check_packages()
 
   def __repr__(self):
     """
@@ -71,6 +60,28 @@ class DocMapper():
           print(f"Required package {package_name} was not installed!: {str(e)}")
     del importlib
     print("All required packages are installed.")
+    return None
+
+  def import_packages(self)->None:
+    """
+    Import installed packages.
+
+    Returns:
+    - None
+    """
+    from typing import List
+    import os
+    import re
+    import zipfile
+    import numpy as np
+    import pandas as pd
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+    import nltk
+    nltk.download(['punkt'])
+    from nltk.tokenize import word_tokenize 
+
+    print("All required packages are imported.")
     return None
 
   def trim_characters(self,stxt:str='')->str:
