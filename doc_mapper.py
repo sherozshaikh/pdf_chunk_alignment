@@ -1,3 +1,36 @@
+# -*- coding: utf-8 -*-
+
+# Checks for required Python packages and installs them if not already installed.
+!pip install --quiet importlib
+import importlib
+
+req_packages:list = ['typing','os','re','zipfile','numpy','pandas','sklearn','nltk']
+
+for package_name in req_packages:
+  try:
+    importlib.import_module(package_name)
+  except:
+    try:
+      !pip install --quiet {package_name}
+    except Exception as e:
+      print(f"Required package {package_name} was not installed!: {str(e)}")
+del importlib
+print("All required packages are installed.")
+
+# Import installed packages.
+from typing import List
+import os
+import re
+import zipfile
+import numpy as np
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import nltk
+nltk.download(['punkt'])
+from nltk.tokenize import word_tokenize 
+print("All required packages are imported.")
+
 class DocMapper():
   """
   A class to find close elements links between two documents.
@@ -16,8 +49,6 @@ class DocMapper():
     - same_flag (bool), default = False: If same then retrive only lower trianglular cosine matrix.
 
     """
-    self.check_packages()
-    self.import_packages()
     self.doc1_elements_list:List[str] = doc1_elements_list
     self.doc2_elements_list:List[str] = doc2_elements_list
     self.doc1_elements_embedding:np.ndarray = doc1_elements_embedding
@@ -37,52 +68,6 @@ class DocMapper():
     Returns a description of the class.
     """
     return "Class to fetch Similar Doc1 Elements for given Doc2 Elements."
-
-  def check_packages(self)->None:
-    """
-    Checks for required Python packages and installs them if not already installed.
-
-    Returns:
-    - None
-    """
-    !pip install --quiet importlib
-    import importlib
-
-    req_packages:list = ['typing','os','re','zipfile','numpy','pandas','sklearn','nltk']
-
-    for package_name in req_packages:
-      try:
-        importlib.import_module(package_name)
-      except:
-        try:
-          !pip install --quiet {package_name}
-        except Exception as e:
-          print(f"Required package {package_name} was not installed!: {str(e)}")
-    del importlib
-    print("All required packages are installed.")
-    return None
-
-  def import_packages(self)->None:
-    """
-    Import installed packages.
-
-    Returns:
-    - None
-    """
-    from typing import List
-    import os
-    import re
-    import zipfile
-    import numpy as np
-    import pandas as pd
-    from sklearn.feature_extraction.text import TfidfVectorizer
-    from sklearn.metrics.pairwise import cosine_similarity
-    import nltk
-    nltk.download(['punkt'])
-    from nltk.tokenize import word_tokenize 
-
-    print("All required packages are imported.")
-    return None
 
   def trim_characters(self,stxt:str='')->str:
     """
