@@ -36,7 +36,7 @@ class DocMapper():
   """
   A class to find close elements links between two documents.
   """
-  def __init__(self,doc1_elements_list:List[str],doc2_elements_list:List[str],doc1_elements_embedding:np.ndarray=None,doc2_elements_embedding:np.ndarray=None,threshold_:float=0.6,output_folder:str='Mapped_Attributes',same_flag:bool=False):
+  def __init__(self,doc1_elements_list:List[str],doc2_elements_list:List[str],doc1_elements_embedding:np.ndarray=None,doc2_elements_embedding:np.ndarray=None,threshold_:float=0.6,output_folder:str='Mapped_Attributes',same_flag:bool=False,create_folder:bool=False,create_zip:bool=False,):
     """
     Initialize the DocMapper class.
 
@@ -47,7 +47,9 @@ class DocMapper():
     - doc2_elements_embedding (ndarray, optional): Doc2 Embeeding Vector.
     - threshold_ (float, optional), default = 0.6: Threshold value for filtering similarity scores.
     - output_folder (str), default = Mapped_Attributes: Output Folder Name.
-    - same_flag (bool), default = False: If same then retrive only lower trianglular cosine matrix.
+    - same_flag (bool, optional), default = False: If same then retrive only lower trianglular cosine matrix.
+    - create_folder (bool, optional), default = False: If True, create the output folder specified by 'output_folder'. Default is False.
+    - create_zip (bool, optional), default = False: If True, create a ZIP archive of the output folder contents. Default is False.
 
     """
     self.doc1_elements_list:List[str] = doc1_elements_list
@@ -57,6 +59,8 @@ class DocMapper():
     self.threshold_:float = threshold_
     self.output_folder:str = self.trim_characters(stxt=output_folder).replace(' ','_')
     self.same_flag:bool = same_flag
+    self.create_folder:bool = create_folder
+    self.create_zip:bool = create_zip
 
   def __repr__(self):
     """
@@ -224,11 +228,18 @@ class DocMapper():
     mapped_result_df['Score']:pd.Series = mapped_result_df['Score'].round(4)
 
     # Finalize and write the results to a CSV file
-    self.create_final_folder() # create folder
-    mapped_result_df.to_csv(path_or_buf=self.output_folder+'/Mapping.csv',index=False,mode='w',encoding='utf-8') # save in CSV file format
+
+    # create folder
+    if self.create_folder:
+      self.create_final_folder()
+
+    # save in CSV file format
+    mapped_result_df.to_csv(path_or_buf=self.output_folder+'/Mapping.csv',index=False,mode='w',encoding='utf-8')
     del mapped_result_df
 
-    # self.create_final_zip() # create zip
+    # create zip
+    if self.create_zip:
+      self.create_final_zip()
     print(f"Elapsed time: {((time.time() - start_time) / 60):.2f} minutes")
     return None
 
@@ -237,7 +248,7 @@ def custom_ram_cleanup_func()->None:
   Clean up global variables except for specific exclusions and system modules.
 
   This function deletes all global variables except those specified in
-  `exclude_vars` and variables starting with underscore ('_').
+  'exclude_vars' and variables starting with underscore ('_').
 
   Excluded variables:
   - Modules imported into the system (except 'sys' and 'os')
