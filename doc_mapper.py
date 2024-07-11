@@ -344,6 +344,8 @@ if __name__ == "__main__":
     threshold_=0.7,
     output_folder='TF_IDF',
     same_flag=False,
+    create_folder=False,
+    create_zip=False,
     ).main()
 
   custom_ram_cleanup_func()
