@@ -232,9 +232,10 @@ class DocMapper():
     # create folder
     if self.create_folder:
       self.create_final_folder()
-
-    # save in CSV file format
-    mapped_result_df.to_csv(path_or_buf=self.output_folder+'/Mapping.csv',index=False,mode='w',encoding='utf-8')
+      # save in CSV file format
+      mapped_result_df.to_csv(path_or_buf=self.output_folder+'/Mapping.csv',index=False,mode='w',encoding='utf-8')
+    else:
+      mapped_result_df.to_csv(path_or_buf=self.output_folder+'_Mapping.csv',index=False,mode='w',encoding='utf-8')
     del mapped_result_df
 
     # create zip
