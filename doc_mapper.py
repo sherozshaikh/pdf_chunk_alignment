@@ -4,7 +4,7 @@
 import subprocess
 import importlib
 
-req_packages:list = ['typing','os','re','zipfile','numpy','pandas','sklearn','nltk']
+req_packages:list = ['typing','os','re','zipfile','numpy','pandas','scikit-learn','nltk']
 
 for package_name in req_packages:
   try:
